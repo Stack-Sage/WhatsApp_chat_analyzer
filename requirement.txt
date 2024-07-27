@@ -1,0 +1,10 @@
+pip
+streamlit
+pandas
+numpy
+matplotlib
+seaborn
+altair
+scikit-learn
+wordcloud
+textblob
