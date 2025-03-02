@@ -1,4 +1,5 @@
 
+from wordcloud import WordCloud
 from sklearn.metrics import mean_squared_error, r2_score
 import re
 import numpy as np
@@ -53,6 +54,21 @@ def most_busy_users(df):
     return x, df
 
 
+# code for displaying most used words by the help of word cloud
+def create_wordcloud(selected_user, df):
+    if selected_user != 'Overall':
+        df = df[df['user'] == selected_user]
+
+    # Remove media messages and empty strings
+    df = df[(df['messages'] != '<Media omitted>\n') & (df['messages'].notna())]
+
+    text = df['messages'].str.cat(sep=" ").strip()
+
+    if not text:  # If text is empty
+        text = "No words available"
+
+    wc = WordCloud(width=300, height=300, min_font_size=10, background_color="white")
+    return wc.generate(text)
 
 
 def monthly_timeline(selected_user, df):
