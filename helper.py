@@ -59,10 +59,16 @@ def create_wordcloud(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
 
-    wc = WordCloud(width=300, height=300, min_font_size=10, background_color="white")
-    df_wc = wc.generate(df['messages'].str.cat(sep=" "))
+    # Remove media messages and empty strings
+    df = df[(df['messages'] != '<Media omitted>\n') & (df['messages'].notna())]
 
-    return df_wc
+    text = df['messages'].str.cat(sep=" ").strip()
+
+    if not text:  # If text is empty
+        text = "No words available"
+
+    wc = WordCloud(width=300, height=300, min_font_size=10, background_color="white")
+    return wc.generate(text)
 
 
 def monthly_timeline(selected_user, df):
