@@ -1,3 +1,4 @@
+from wordcloud import WordCloud
 import streamlit as st
 import calendar
 import pre_process
