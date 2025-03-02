@@ -6,8 +6,6 @@ import helper
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import altair as alt
-from textblob import TextBlob
 
 
 st.set_page_config(
@@ -19,92 +17,36 @@ st.set_page_config(
 
 )
 
-# about_content = """
-# <h1 style='color: black; text-shadow:4px 4px 4px white ;text-align: center;'>About The Website<br></h1>
-#
-# <p style = 'color:white;'>this is a streamlit app for analyzing whatsapp chat data. It provides insights and trends analysis based on the exported chat data. the app allows users to upload their whatsapp chat export files and explore various statistics and visualizations.</p>
-#
-# <p>For any questions or feedback:- <br> please contact us at <a href="mailto:official.adirajput@gmail.com">official.adirajput@gmail.com</a>.</p>
-#
-# <p>Connect with me on LinkedIn: <a href="https://www.linkedin.com/in/adarsh-pathania177/">adarsh-pathania177</a></p>
-# """
-#
-# st.markdown(about_content, unsafe_allow_html=True)
-# st.image('Black and Green Simple Business Youtube Thumbnail.png')
-# Home Page
+
 def home():
     st.header("")
 
 
 
-# About Page
-def about():
-    about_content = """
-    <h1 style='color: black; text-shadow:4px 4px 4px white ;text-align: center;'>About The Website<br></h1>
-
-    <p style='color:white;'>This is a Streamlit app for analyzing WhatsApp chat data. It provides insights and trends analysis based on the exported chat data. The app allows users to upload their WhatsApp chat export files and explore various statistics and visualizations.</p>
-
-    <p>For any questions or feedback:- <br> please contact us at <a href="mailto:official.adirajput@gmail.com">official.adirajput@gmail.com</a>.</p>
-
-    <p>Connect with me on LinkedIn: <a href="https://www.linkedin.com/in/adarsh-pathania177/">adarsh-pathania177 </a></p>
-    
-    """
-
-    st.markdown(about_content, unsafe_allow_html=True)
-    st.image('Black and Green Simple Business Youtube Thumbnail.png')
-
-    content = """
-        ## WhatsApp Chat Analyzer
-
-        Welcome to the WhatsApp Chat Analyzer! This Streamlit app empowers users to gain insights and trends from their exported chat data. Key features include:
-
-        - **General Statistics:**
-          - Total messages, words, media shared, and emojis used.
-          - Distribution of messages throughout the day and the week.
-          - Analysis of messages on each day and month.
-
-        - **User Engagement:**
-          - Identification of most engaged users.
-          - Visualization of user engagement through bar graphs.
-
-        - **Word Analysis:**
-          - Word cloud visualization showcasing most used words.
-          - Graphical representation of word usage frequency.
-
-        - **Sentiment Analysis:**
-          - Distribution of sentiment in the chat, categorized as very negative, negative, neutral, and positive.
-
-        - **Hourly Distribution:**
-          - Visualization of hourly distribution of messages.
-          - Highlighting peak hours.
-
-        - **Linear Regression:**
-          - Linear regression analysis with a scatter plot of actual data and regression line.
-
-        - **Active Users Heatmap:**
-          - Heatmap displaying the most active hours of users.
-
-        - **Individual User Analysis:**
-          - Analysis of individual users, including word cloud and graphical representation.
-
-        Feel free to upload your WhatsApp chat export file and explore the rich set of statistical and visualizations features! For any questions or feedback, please contact us at [official.adirajput@gmail.com](mailto:official.adirajput@gmail.com).
-        Go to the Home Section for analysis
-        """
-
-
-    st.markdown(content, unsafe_allow_html=True)
-
 st.sidebar.title("📱 Whatsapp Chat Analyzer")
-st.sidebar.image("px4.jpg",width=200)
+st.sidebar.markdown(
+    """
+    <style>
+    .sidebar-profile {
+        width: 150px; 
+        height: 150px;
+        border-radius: 50%; 
+        object-fit: cover; 
+        display: block;
+        margin-left: auto;
+        margin-bottom: 20px;
+        margin-right: auto;
+    
+        box-shadow: 4px 4px 10px violet;
+    }
+    </style>
+    <img class="sidebar-profile"
+     src = "https://i.pinimg.com/originals/89/b4/53/89b453e089acde448cad6897703681b6.jpg" >
+    """,
+    unsafe_allow_html=True
+)
 
-# Create a sidebar for navigation
-page = st.sidebar.radio("Navigation", ["About", "Home"], index =0)
 
-# Display the selected page
-if page == "Home":
-    home()
-elif page == "About":
-    about()
 
 
 
@@ -431,67 +373,10 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
 
-        # sentiment analysis of the char ----------------------------sentiment analysis
-
-        st.markdown(
-            "<br><h2 style='color:#006bff ; text-shadow: 0 0 2px rgba(255, 255, 255, 0.8); text-align:center;'>Sentiment Analysis</h2>",
-            unsafe_allow_html=True)
-
-
-        df['sentiment'] = df['messages'].apply(lambda x: TextBlob(x).sentiment.polarity)
-
-        # Map sentiment polarity to custom labels
-        df['sentiment_label'] = pd.cut(df['sentiment'], bins=[-1, -0.5, 0, 0.5, 1, 1.5],
-                                       labels=['very negative', 'negative', 'neutral', 'positive','very positive'])
-        # Display the distribution of sentiments
-        st.write("Sentiment Distribution in Dataset:")
-        sentiment_chart = st.bar_chart(df['sentiment_label'].value_counts())
 
 
 
 
-
-        # # Create a bar plot
-        # fig, ax = plt.subplots(figsize=(8,4))
-        # fig.patch.set_facecolor('black')
-
-        # # Add a gradient background
-        # direction = 1
-        # extent = (0, 1, 0, 1)
-        # transform = ax.transAxes
-        # cmap = plt.cm.rainbow
-        # cmap_range = (0.2, 0.8)
-        # alpha = 0.5
-        # phi = direction * np.pi / 2
-        # v = np.array([np.cos(phi), np.sin(phi)])
-        # X = np.array([[v @ [1, 0], v @ [1, 1]],
-        #               [v @ [0, 0], v @ [0, 1]]])
-        # a, b = cmap_range
-        # X = a + (b - a) / X.max() * X
-        # im = ax.imshow(X, interpolation='bicubic', clim=(0, 1), aspect='auto', cmap=cmap, extent=extent,
-        #                transform=transform, alpha=alpha, zorder=-1)
-        #
-        # # Create the count plot
-        # ax = sns.countplot(x='sentiment_label', data=df, order=df['sentiment_label'].value_counts().index,
-        #                    palette='viridis', edgecolor='black', saturation=0.7,linewidth =1,width=0.3)
-        #
-        # # Add text annotations for each bar
-        # for p in ax.patches:
-        #     ax.annotate(f'{p.get_height()}', (p.get_x() + p.get_width() / 1., p.get_height()),
-        #                 ha='center', va='center', fontsize=10, color='black', xytext=(0,5),
-        #                 textcoords='offset points')
-        #
-        #
-        # # Customize other plot elements
-        # plt.title('Sentiment Distribution in Chat')
-        # plt.xticks(color='white')
-        # plt.tick_params(color='white')
-        # plt.yticks(color='white')
-        # plt.xlabel('Sentiment',color='white')
-        # plt.ylabel('Count',color = 'white')
-        #
-        # # Display the plot in Streamlit
-        # st.pyplot(fig)
 
         st.markdown(
             "<br><h2 style='color: #a6ee52; text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); text-align:center;'>Linear Regression </h2>",
@@ -664,55 +549,7 @@ if uploaded_file is not None:
 
 
 
-        content = """
-        <br><h1 style='color: black; text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);text-align: center;'>About The Website</h1><br>
-        
-        <p style = 'text-shadow:1px 2px 1px blue>This is a Streamlit app for analyzing WhatsApp chat data. It provides insights and trends analysis based on the exported chat data. The app allows users to upload their WhatsApp chat export files and explore various statistics and visualizations.</p>
-        
-        <p>For any questions or feedback:- <br> Please contact us at <a href="mailto:official.adirajput@gmail.com">official.adirajput@gmail.com</a>.</p>
-        
-        <p>Connect with me on LinkedIn: <a href="https://www.linkedin.com/in/adarsh-pathania177/">adarsh-pathania177</a></p>
-        """
 
-        st.markdown(content, unsafe_allow_html=True)
 
-        about_content = """
-            ## WhatsApp Chat Analyzer
-
-            Welcome to the WhatsApp Chat Analyzer! This Streamlit app empowers users to gain insights and trends from their exported chat data. Key features include:
-
-            - **General Statistics:**
-              - Total messages, words, media shared, and emojis used.
-              - Distribution of messages throughout the day and the week.
-              - Analysis of messages on each day and month.
-
-            - **User Engagement:**
-              - Identification of most engaged users.
-              - Visualization of user engagement through bar graphs.
-
-            - **Word Analysis:**
-              - Word cloud visualization showcasing most used words.
-              - Graphical representation of word usage frequency.
-
-            - **Sentiment Analysis:**
-              - Distribution of sentiment in the chat, categorized as very negative, negative, neutral, and positive.
-
-            - **Hourly Distribution:**
-              - Visualization of hourly distribution of messages.
-              - Highlighting peak hours.
-
-            - **Linear Regression:**
-              - Linear regression analysis with a scatter plot of actual data and regression line.
-
-            - **Active Users Heatmap:**
-              - Heatmap displaying the most active hours of users.
-
-            - **Individual User Analysis:**
-              - Analysis of individual users, including word cloud and graphical representation.
-
-            Feel free to upload your WhatsApp chat export file and explore the rich set of statistical and visualizations features! For any questions or feedback, please contact us at [official.adirajput@gmail.com](mailto:official.adirajput@gmail.com).
-            """
-
-        st.markdown(about_content, unsafe_allow_html=True)
 
 
